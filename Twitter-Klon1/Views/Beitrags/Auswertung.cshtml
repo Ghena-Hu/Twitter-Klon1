@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Meine Auswertung";
+}
+
+<div class="container mt-4">
+    <h1>Meine Auswertung</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2>@ViewBag.AnzahlBeitraege</h2>
+                    <p>Verfasste Beiträge</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2>@ViewBag.AnzahlLikes</h2>
+                    <p>Likes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2>@ViewBag.AnzahlDislikes</h2>
+                    <p>Dislikes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,145 @@
+@model IEnumerable<Beitrag>
+
+@{
+    ViewData["Title"] = "Beiträge";
+}
+
+<div class="container mt-4">
+
+    <!-- Überschrift -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Beiträge</h1>
+
+        <a asp-action="Create" class="btn btn-primary">
+            + Neuer Beitrag
+        </a>
+    </div>
+
+    <!-- Auswertung -->
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h3>@ViewBag.AnzahlBeitraege</h3>
+                    <p class="text-muted mb-0">Beiträge</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h3>❤️ @ViewBag.AnzahlLikes</h3>
+                    <p class="text-muted mb-0">Likes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h3>👎 @ViewBag.AnzahlDislikes</h3>
+                    <p class="text-muted mb-0">Dislikes</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Beiträge -->
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-8 mx-auto mb-3">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <!-- Benutzer und Datum -->
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong>
+                                @item.User?.UserName
+                            </strong>
+
+                            <small class="text-muted">
+                                @item.ErstellungsDatum
+                            </small>
+                        </div>
+
+                        <!-- Beitragstext -->
+                        <p class="card-text">
+                            @item.Textinhalt
+                        </p>
+
+                        <!-- Likes / Dislikes -->
+                        <div class="d-flex gap-2">
+
+                            <form asp-controller="Likes"
+                                  asp-action="Toggle"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="beitragId"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm">
+                                    ❤️ @item.Likes.Count
+                                </button>
+
+                            </form>
+
+                            <form asp-controller="Dislikes"
+                                  asp-action="Toggle"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="beitragId"
+                                       value="@item.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-outline-secondary btn-sm">
+                                    👎 @item.Dislikes.Count
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <!-- Aktionen nur für eigenen Beitrag -->
+                        @if (item.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                        {
+                            <hr />
+
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Bearbeiten
+                            </a>
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-secondary">
+                                Details
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-sm btn-outline-danger">
+                                Löschen
+                            </a>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
